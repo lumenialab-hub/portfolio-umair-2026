@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  --accent: #10b981;
+}
+
+@theme inline {
+  --color-accent: var(--accent);
+  --font-syne: var(--font-syne), sans-serif;
+  --font-dm-sans: var(--font-dm-sans), sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-dm-sans), system-ui, sans-serif;
+    color: #0A0A0A;
+    background-color: #F8F9FA;
+  }
+}
+
+.heading-font {
+  font-family: var(--font-syne), sans-serif;
+}
+
+.hero-bg {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.project-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card:hover {
+  transform: scale(1.03) translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+}
+
+.horizontal-scroll {
+  scrollbar-width: none;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.section-padding {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #10b981;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover:after {
+  width: 100%;
+}

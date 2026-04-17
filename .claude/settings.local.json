@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const pkg = require\\('./node_modules/tailwindcss/package.json'\\); console.log\\(pkg.version\\)\")",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s http://localhost:3002)",
+      "Bash(netstat -ano)",
+      "Bash(tasklist /FI \"PID eq 27024\")",
+      "Bash(tasklist //FI \"PID eq 27024\")",
+      "Bash(powershell \"Get-Process -Id 27024 | Select-Object Name,Id,Path\")"
+    ]
+  }
+}
