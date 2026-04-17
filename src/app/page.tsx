@@ -1,9 +1,35 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { PROJECTS } from "../data/projects";
-import { Menu, X, ArrowRight, Calendar, MessageCircle, CheckCircle2 } from "lucide-react";
+import { Menu, X, ArrowRight, Calendar, MessageCircle, CheckCircle2, Zap, Trophy, Users } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+
+function Counter({ value, suffix = "", duration = 2 }: { value: number, suffix?: string, duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (isInView) {
+      let start = 0;
+      const end = value;
+      const totalMiliseconds = duration * 1000;
+      const incrementTime = totalMiliseconds / end;
+
+      const timer = setInterval(() => {
+        start += 1;
+        setCount(start);
+        if (start === end) clearInterval(timer);
+      }, incrementTime);
+
+      return () => clearInterval(timer);
+    }
+  }, [isInView, value, duration]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -13,19 +39,11 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  // Filter specific projects requested by user
   const featuredSlugs = ["reseller-frontend", "medaan", "vendors-hendor", "air-ideal", "satradelink", "saas-trucking"];
   const featuredProjects = featuredSlugs.map(slug => PROJECTS.find(p => p.slug === slug)).filter(Boolean);
 
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-pulse text-2xl font-bold tracking-tighter heading-font uppercase text-black">umair.dev</div>
-      </div>
-    );
-  }
+  if (!mounted) return null;
 
-  // Placeholder SVGs for Social Icons to ensure build stability
   const GithubIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.28 1.15-.28 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
   );
@@ -35,358 +53,194 @@ export default function Home() {
   );
 
   return (
-    <div className="bg-white text-[#0A0A0A] overflow-x-hidden selection:bg-[#10b981] selection:text-white">
+    <div className="bg-[#FCFCFA] text-[#1A1A1A] selection:bg-[#10b981] selection:text-white antialiased font-sans">
       {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-black tracking-tighter heading-font text-black uppercase">
-            umair<span className="text-[#10b981]">.dev</span>
+      <nav className="fixed top-0 left-0 right-0 z-[100] bg-[#FCFCFA]/80 backdrop-blur-xl border-b border-black/5">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Link href="/" className="text-xl font-black tracking-tighter flex items-center gap-2">
+            <span className="w-8 h-8 bg-black text-white flex items-center justify-center rounded-lg font-black text-xs uppercase">U</span>
+            UMAIR.DEV
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8 text-sm uppercase tracking-widest font-bold">
-            <a href="#work" className="hover:text-[#10b981] transition-colors">Work</a>
-            <a href="#about" className="hover:text-[#10b981] transition-colors">About</a>
-            <a href="#process" className="hover:text-[#10b981] transition-colors">Process</a>
-            <div className="w-px h-4 bg-gray-200"></div>
-            <div className="flex items-center gap-4">
-              <a href="https://github.com/lumenialab-hub" target="_blank" className="hover:text-[#10b981] transition-colors py-1">
-                <GithubIcon />
-              </a>
-              <a href="https://linkedin.com/in/umair-tufail" target="_blank" className="hover:text-[#10b981] transition-colors py-1">
-                <LinkedinIcon />
-              </a>
-            </div>
+          <div className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-bold">
+            <a href="#work" className="hover:text-[#10b981] transition-colors">Portfolio</a>
+            <a href="#about" className="hover:text-[#10b981] transition-colors">Studio</a>
+            <a href="https://wa.me/923354455494" className="px-5 py-2.5 bg-black text-white rounded-full hover:bg-[#10b981] transition-all">Free Call</a>
           </div>
 
-          <a
-            href="https://wa.me/923354455494"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden md:flex items-center gap-2 px-6 py-3 bg-black hover:bg-[#10b981] text-white rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300"
-          >
-            <Calendar size={14} />
-            Free Call
-          </a>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 text-black cursor-pointer"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle Menu"
-          >
-            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X /> : <Menu />}
           </button>
-        </div>
-
-        {/* Mobile Menu Overlay */}
-        <div className={`fixed inset-0 top-[73px] bg-white z-[99] md:hidden flex flex-col p-10 transition-all duration-300 ease-in-out ${isMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}`}>
-           <div className="flex flex-col gap-8 text-4xl font-bold tracking-tighter heading-font">
-                <a href="#work" onClick={() => setIsMenuOpen(false)}>Work</a>
-                <a href="#about" onClick={() => setIsMenuOpen(false)}>About</a>
-                <a href="#process" onClick={() => setIsMenuOpen(false)}>Process</a>
-           </div>
-           <div className="mt-auto pt-10 border-t border-gray-100 flex flex-col gap-6">
-                <div className="flex gap-6">
-                  <a href="https://github.com/lumenialab-hub" target="_blank" className="p-3 bg-gray-50 rounded-full text-black">
-                    <GithubIcon />
-                  </a>
-                  <a href="https://linkedin.com/in/umair-tufail" target="_blank" className="p-3 bg-gray-50 rounded-full text-black">
-                    <LinkedinIcon />
-                  </a>
-                </div>
-                <a
-                  href="https://wa.me/923354455494"
-                  className="w-full py-5 bg-black text-white rounded-2xl text-center font-bold uppercase tracking-widest active:scale-95 transition-transform"
-                >
-                  Book Strategy Call
-                </a>
-           </div>
         </div>
       </nav>
 
       {/* HERO */}
-      <section className="min-h-screen flex items-center bg-black text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-[#10b981]/10 blur-[120px] rounded-full -mr-40 -mt-40"></div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10 w-full pt-20">
-          <div className="max-w-5xl">
-            <div className="inline-block px-4 py-1.5 bg-[#10b981]/20 border border-[#10b981]/30 rounded-full text-[#10b981] text-[10px] font-bold uppercase tracking-[0.2em] mb-8 animate-pulse">
-               Architecture • Engineering • Scale
-            </div>
-            <h1 className="text-6xl md:text-9xl font-bold tracking-tighter heading-font leading-[0.85] mb-10">
-              I build <span className="text-[#10b981]">robust</span><br />digital assets.
-            </h1>
+      <section className="pt-40 pb-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8 uppercase text-black">
+                Let’s build <br />
+                something <span className="text-[#10b981] italic">legendary.</span>
+              </h1>
+              <p className="text-xl text-gray-500 max-w-lg mb-12 leading-relaxed">
+                Architectural Engineering for founders. Specialized in Laravel backends and high-performance Next.js frontends.
+              </p>
+              
+              <div className="flex flex-wrap gap-4 mb-16">
+                 <a href="#work" className="px-8 py-4 bg-black text-white rounded-full font-bold flex items-center gap-2 hover:bg-[#10b981] transition-all group shadow-xl">
+                    View Portfolio <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                 </a>
+                 <div className="flex items-center gap-4 px-6 border-l border-gray-200">
+                    <a href="https://github.com/lumenialab-hub" target="_blank" className="hover:text-[#10b981] transition-colors"><GithubIcon /></a>
+                    <a href="https://linkedin.com/in/umair-tufail" target="_blank" className="hover:text-[#10b981] transition-colors"><LinkedinIcon /></a>
+                 </div>
+              </div>
 
-            <p className="text-xl md:text-3xl text-gray-400 max-w-2xl leading-[1.3] mb-16">
-              Expert-level Laravel backends and high-performance Next.js frontends. I turn complex problems into simplified, scalable software.
-            </p>
+              {/* STATS */}
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 pt-8 border-t border-black/5 uppercase">
+                <div>
+                  <div className="text-4xl font-black mb-1"><Counter value={40} suffix="+" /></div>
+                  <div className="text-[10px] uppercase tracking-widest font-black text-gray-400">Projects Finished</div>
+                </div>
+                <div>
+                  <div className="text-4xl font-black mb-1"><Counter value={100} suffix="%" /></div>
+                  <div className="text-[10px] uppercase tracking-widest font-black text-gray-400">Satisfaction</div>
+                </div>
+                <div className="hidden lg:block">
+                  <div className="text-4xl font-black mb-1">AVAILABLE</div>
+                  <div className="text-[10px] uppercase tracking-widest font-black text-gray-400">For New Projects</div>
+                </div>
+              </div>
+            </motion.div>
 
-            <div className="flex flex-wrap gap-6">
-              <a
-                href="#work"
-                className="group inline-flex items-center gap-4 px-10 py-6 bg-[#10b981] text-black rounded-full text-xl font-bold hover:scale-105 transition-all"
-              >
-                View Selected Work
-                <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-              </a>
-
-              <a
-                href="https://wa.me/923354455494"
-                target="_blank"
-                className="inline-flex items-center gap-4 px-10 py-6 border-2 border-white/20 hover:border-[#10b981] rounded-full text-xl font-medium transition-all"
-              >
-                Book Free Consultation
-              </a>
-            </div>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="aspect-[4/5] rounded-[3rem] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl bg-gray-100 border-8 border-white">
+                 <img src="/umair-portrait.jpg" alt="Umair Tufail" className="w-full h-full object-cover" />
+              </div>
+              <div className="absolute -bottom-6 -right-6 bg-black text-white p-10 rounded-3xl shadow-2xl max-w-[280px] border border-white/10">
+                <p className="text-xs font-black leading-tight uppercase tracking-[0.1em]">"Everything I build is engineered for success and scaled for millions."</p>
+                <div className="mt-4 flex items-center gap-2">
+                   <div className="w-4 h-px bg-[#10b981]"></div>
+                   <span className="text-[9px] font-black text-[#10b981] uppercase tracking-widest">Umair Tufail</span>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* SELECTED WORK */}
-      <section id="work" className="py-32 bg-[#F9F9F9]">
+      {/* COMPACT PROJECT GRID */}
+      <section id="work" className="py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-            <div className="max-w-2xl">
-              <h2 className="text-5xl md:text-8xl font-bold tracking-tighter heading-font leading-none mb-6">Selected Work</h2>
-              <p className="text-xl text-gray-500 font-medium">Real projects delivered with modern full-stack tools and production-grade architecture.</p>
+          <div className="flex justify-between items-end mb-16">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#10b981] mb-2 block">Selected Work</span>
+              <h2 className="text-5xl font-black tracking-tighter uppercase">Portfolio</h2>
             </div>
-            <Link href="/projects" className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest border-b-2 border-black pb-1 hover:text-[#10b981] hover:border-[#10b981] transition-all">
-               View Full Archive <ArrowRight size={16} />
-            </Link>
+            <Link href="/projects" className="text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-black pb-1 hover:text-[#10b981] hover:border-[#10b981] transition-all">All Archive</Link>
           </div>
 
-          <div className="space-y-40">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredProjects.map((project, idx) => (
               project && (
-                <div key={project.slug} className="group grid md:grid-cols-12 gap-12 items-center">
-                   <div className={`md:col-span-12 lg:col-span-7 ${idx % 2 === 1 ? "lg:order-2" : ""}`}>
-                      <Link href={`/projects/${project.slug}`} className="block relative aspect-video rounded-[40px] overflow-hidden bg-gray-100 shadow-2xl border border-gray-100 transform group-hover:scale-[1.01] transition-transform duration-500">
-                         <img 
-                           src={project.thumbnail || project.images?.[0] || ""} 
-                           alt={project.title}
-                           className="w-full h-full object-cover"
-                         />
-                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                            <div className="opacity-0 group-hover:opacity-100 px-8 py-4 bg-white rounded-full text-black font-bold uppercase tracking-widest text-xs translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                               View Case Study
-                            </div>
-                         </div>
-                      </Link>
-                   </div>
-                   
-                   <div className={`md:col-span-12 lg:col-span-5 ${idx % 2 === 1 ? "lg:order-1" : ""}`}>
-                      <div className="flex items-center gap-3 mb-6">
-                         <span className="px-4 py-1.5 bg-black text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
-                           {project.niche}
-                         </span>
-                      </div>
-                      <h3 className="text-4xl md:text-6xl font-bold tracking-tighter heading-font mb-6 leading-tight group-hover:text-[#10b981] transition-colors">
-                        {project.title}
-                      </h3>
-                      <p className="text-xl text-gray-600 leading-relaxed mb-10 font-medium">
-                        {project.problem}
-                      </p>
-                      <div className="flex flex-wrap gap-3 mb-10">
-                        {project.stack.split(",").slice(0, 4).map(tech => (
-                          <span key={tech} className="text-xs font-bold uppercase tracking-widest text-gray-400">
-                             {tech.trim()}
-                          </span>
-                        ))}
-                      </div>
-                      <Link 
-                        href={`/projects/${project.slug}`}
-                        className="inline-flex items-center gap-3 text-lg font-bold border-b-2 border-black pb-1 hover:text-[#10b981] hover:border-[#10b981] transition-all"
-                      >
-                        Explore Project Details <ArrowRight size={20} />
-                      </Link>
-                   </div>
-                </div>
+                <motion.div 
+                  key={project.slug}
+                  whileHover={{ y: -8 }}
+                  className="group bg-[#FCFCFA] rounded-[2.5rem] overflow-hidden border border-black/5 hover:border-[#10b981]/20 transition-all duration-500 shadow-sm hover:shadow-2xl"
+                >
+                  <Link href={`/projects/${project.slug}`} className="block aspect-[16/10] overflow-hidden relative">
+                    <img src={project.thumbnail || project.images?.[0]} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                       <span className="px-5 py-2.5 bg-white text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-full shadow-lg">View Project</span>
+                    </div>
+                  </Link>
+                  <div className="p-10">
+                    <div className="text-[9px] font-black uppercase tracking-[0.2em] text-[#10b981] mb-3">{project.niche}</div>
+                    <h3 className="text-xl font-bold mb-4 line-clamp-1 group-hover:text-[#10b981] transition-colors">{project.title}</h3>
+                    <p className="text-xs text-gray-400 mb-8 line-clamp-2 leading-relaxed uppercase tracking-tight font-medium">{project.problem}</p>
+                    <div className="flex flex-wrap gap-2">
+                       {project.stack.split(",").slice(0,3).map(s => (
+                         <span key={s} className="px-3 py-1.5 bg-black/5 rounded-lg text-[8px] font-black uppercase tracking-wider text-gray-500">{s.trim()}</span>
+                       ))}
+                    </div>
+                  </div>
+                </motion.div>
               )
             ))}
           </div>
         </div>
       </section>
 
-      {/* RESULTS / IMPACT */}
-      <section className="py-32 bg-black text-white">
+      {/* RESULTS GRID COMPACT */}
+      <section className="py-24 bg-black text-white">
         <div className="max-w-7xl mx-auto px-6">
-           <h2 className="text-4xl md:text-7xl font-bold tracking-tighter heading-font mb-20">Measurable Impact</h2>
-           <div className="grid md:grid-cols-3 gap-12">
-              <div className="p-10 border border-white/10 rounded-[40px] bg-white/5">
-                 <div className="text-6xl font-bold text-[#10b981] mb-4">40%</div>
-                 <div className="text-xl font-bold uppercase tracking-widest mb-4">Conversion Boost</div>
-                 <p className="text-gray-400">Average increase in user retention through UX-driven engineering for early-stage SaaS.</p>
-              </div>
-              <div className="p-10 border border-white/10 rounded-[40px] bg-white/5">
-                 <div className="text-6xl font-bold text-[#10b981] mb-4">2x</div>
-                 <div className="text-xl font-bold uppercase tracking-widest mb-4">Core Web Vitals</div>
-                 <p className="text-gray-400">Speed improvements for e-commerce platforms using Next.js 15 and specialized caching.</p>
-              </div>
-              <div className="p-10 border border-white/10 rounded-[40px] bg-white/5">
-                 <div className="text-6xl font-bold text-[#10b981] mb-4">100%</div>
-                 <div className="text-xl font-bold uppercase tracking-widest mb-4">Data Integrity</div>
-                 <p className="text-gray-400">Bulletproof Laravel backends with zero downtime during complex migrations.</p>
-              </div>
-           </div>
-        </div>
-      </section>
-
-      {/* ABOUT ENHANCED */}
-      <section id="about" className="py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-20">
-           <div className="md:col-span-12 lg:col-span-5">
-              <div className="sticky top-40">
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#10b981] mb-8 block">The Studio DNA</span>
-                <h2 className="text-5xl md:text-7xl font-bold tracking-tighter heading-font leading-none mb-10">Boutique Web Engineering.</h2>
-                <p className="text-2xl text-gray-600 leading-relaxed mb-12">
-                   I operate as a high-end solo studio, specializing in the TALL Stack and Next.js. I don't just write code; I architect systems that survive success.
-                </p>
-                <div className="flex gap-4">
-                   <div className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center font-bold">UT</div>
-                   <div>
-                      <div className="font-bold">Umair Tufail</div>
-                      <div className="text-sm text-gray-400">Lead Architectural Engineer</div>
-                   </div>
-                </div>
-              </div>
-           </div>
-           
-           <div className="md:col-span-12 lg:col-span-7">
-              <div className="space-y-32">
-                 <div>
-                    <h3 className="text-3xl font-bold mb-10 pb-6 border-b border-gray-100">Why Boutique?</h3>
-                    <div className="grid gap-12">
-                       <div className="flex gap-8">
-                          <div className="flex-shrink-0 w-12 h-12 bg-black text-white rounded-full flex items-center justify-center font-bold">1</div>
-                          <div>
-                             <h4 className="text-xl font-bold mb-4 uppercase tracking-widest">Ownership over Outsourcing</h4>
-                             <p className="text-gray-500 leading-relaxed text-lg">Every line of code is handwritten by me. No junior developers, no offshore handoffs. You get senior expertise from day one to launch.</p>
-                          </div>
-                       </div>
-                       <div className="flex gap-8">
-                          <div className="flex-shrink-0 w-12 h-12 bg-black text-white rounded-full flex items-center justify-center font-bold">2</div>
-                          <div>
-                             <h4 className="text-xl font-bold mb-4 uppercase tracking-widest">Business-First Engineering</h4>
-                             <p className="text-gray-500 leading-relaxed text-lg">I prioritize ROI. I choose tools that maximize speed to market without sacrificing the long-term maintainability of your core asset.</p>
-                          </div>
-                       </div>
-                       <div className="flex gap-8">
-                          <div className="flex-shrink-0 w-12 h-12 bg-black text-white rounded-full flex items-center justify-center font-bold">3</div>
-                          <div>
-                             <h4 className="text-xl font-bold mb-4 uppercase tracking-widest">Absolute Availability</h4>
-                             <p className="text-gray-500 leading-relaxed text-lg">As a boutique studio, I only take on 2-3 major projects per quarter. This ensures your vision gets the obsession it deserves.</p>
-                          </div>
-                       </div>
-                    </div>
-                 </div>
-
-                 <div>
-                    <h3 className="text-3xl font-bold mb-10 pb-6 border-b border-gray-100">Core Stack</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                       {["Laravel", "Next.js", "MySQL", "Tailwind CSS", "Alpine.js", "TILT Stack"].map(tech => (
-                          <div key={tech} className="p-6 bg-gray-50 rounded-2xl flex items-center gap-4 group hover:bg-black hover:text-white transition-all cursor-default">
-                             <CheckCircle2 className="text-[#10b981]" size={20} />
-                             <span className="font-bold uppercase tracking-widest text-[10px]">{tech}</span>
-                          </div>
-                       ))}
-                    </div>
-                 </div>
-              </div>
-           </div>
-        </div>
-      </section>
-
-      {/* THE PROCESS */}
-      <section id="process" className="py-40 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-           <div className="text-center max-w-3xl mx-auto mb-32">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#10b981] mb-6 block">The Roadmap</span>
-              <h2 className="text-6xl md:text-8xl font-bold tracking-tighter heading-font mb-8">Four Steps to Launch.</h2>
-           </div>
-           
-           <div className="grid md:grid-cols-4 gap-4 relative">
-              <div className="hidden md:block absolute top-[60px] left-0 right-0 h-px bg-gray-200 z-0"></div>
-              {[
-                { title: "Define", desc: "Strategy call to audit your current stack and define technical milestones." },
-                { title: "Architect", desc: "Database schema, API design, and high-fidelity technical documentation." },
-                { title: "Engineer", desc: "The deep work. Building your asset in the TALL stack or Next.js." },
-                { title: "Optimize", desc: "Rigorous testing, performance tuning, and bulletproof deployment." }
-              ].map((step, i) => (
-                <div key={step.title} className="relative z-10 p-8 pt-0 text-center md:text-left">
-                   <div className="w-16 h-16 bg-white border border-gray-200 rounded-full flex items-center justify-center text-2xl font-black mb-8 mx-auto md:mx-0 shadow-sm">
-                      0{i+1}
-                   </div>
-                   <h3 className="text-2xl font-bold mb-4 tracking-tight uppercase heading-font">{step.title}</h3>
-                   <p className="text-gray-500 leading-relaxed">{step.desc}</p>
-                </div>
-              ))}
-           </div>
-        </div>
-      </section>
-
-      {/* FINAL CTA & CONTACT */}
-      <section className="bg-black text-white pt-40 pb-20 rounded-t-[60px] md:rounded-t-[100px] mt-20">
-         <div className="max-w-7xl mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-20 mb-40">
-               <div>
-                  <h2 className="text-6xl md:text-9xl font-bold tracking-tighter heading-font leading-none mb-12">
-                     Let's build<br />something <span className="text-[#10b981]">legendary</span>.
-                  </h2>
-                  <div className="space-y-8">
-                     <p className="text-2xl text-gray-400">Available for select projects in Q3 2026.</p>
-                     <div className="flex flex-col gap-4">
-                        <a href="mailto:umair@lumenialab.com" className="text-3xl md:text-5xl font-bold hover:text-[#10b981] transition-colors break-words">umair@lumenialab.com</a>
-                        <div className="flex gap-6 mt-4">
-                           <a href="https://github.com/lumenialab-hub" target="_blank" className="p-4 bg-white/5 rounded-full hover:bg-[#10b981] transition-all">
-                              <GithubIcon />
-                           </a>
-                           <a href="https://linkedin.com/in/umair-tufail" target="_blank" className="p-4 bg-white/5 rounded-full hover:bg-[#10b981] transition-all">
-                              <LinkedinIcon />
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               
-               <div className="bg-[#10b981] p-12 md:p-20 rounded-[60px] text-black flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-4xl md:text-5xl font-extrabold tracking-tighter heading-font mb-8">Free Strategy Consultation</h3>
-                    <p className="text-[1.3rem] leading-relaxed mb-12 opacity-80 font-medium">
-                       A 30-minute call to audit your software architecture and map out a path to scale. No sales pitch, just engineering value.
-                    </p>
-                  </div>
-                  <a 
-                    href="https://wa.me/923354455494"
-                    target="_blank"
-                    className="flex items-center justify-between group p-8 bg-black text-white rounded-3xl text-2xl font-bold hover:scale-[1.02] transition-all"
-                  >
-                     Schedule Now
-                     <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-                  </a>
-               </div>
+          <div className="grid md:grid-cols-3 gap-16">
+            <div className="flex flex-col items-center text-center">
+              <Zap className="text-[#10b981] mb-8" size={32} />
+              <h3 className="text-lg font-black uppercase tracking-widest mb-4">Fast Performance</h3>
+              <p className="text-gray-500 leading-relaxed text-xs uppercase tracking-wider font-medium">Next.js 15 apps optimized for speed and high-level user retention.</p>
             </div>
+            <div className="flex flex-col items-center text-center">
+              <Trophy className="text-[#10b981] mb-8" size={32} />
+              <h3 className="text-lg font-black uppercase tracking-widest mb-4">Scalable Schema</h3>
+              <p className="text-gray-500 leading-relaxed text-xs uppercase tracking-wider font-medium">Laravel backends designed for enterprise-grade growth and security.</p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <Users className="text-[#10b981] mb-8" size={32} />
+              <h3 className="text-lg font-black uppercase tracking-widest mb-4">Full Satisfaction</h3>
+              <p className="text-gray-500 leading-relaxed text-xs uppercase tracking-wider font-medium">100% focused on business goals and measurable conversion results.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <div className="pt-20 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-10">
-               <div className="text-2xl font-black tracking-tighter heading-font uppercase">umair.dev</div>
-               <div className="flex gap-12 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
-                  <span>© 2026 Umair Tufail</span>
-                  <a href="#" className="hover:text-white transition-colors">Privacy</a>
-                  <a href="#" className="hover:text-white transition-colors">Terms</a>
-               </div>
+      {/* STUDIO CTA */}
+      <section id="about" className="py-40 bg-white">
+         <div className="max-w-4xl mx-auto px-6 text-center">
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#10b981] mb-8 block">Project Inquiry</span>
+            <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-16 leading-none">Ready for the<br />Next Step?</h2>
+            <div className="flex flex-col md:flex-row gap-6 justify-center">
+               <a href="https://wa.me/923354455494" className="px-12 py-6 bg-[#10b981] text-black font-black text-xl rounded-full hover:scale-105 transition-all shadow-xl">Get Started</a>
+               <a href="mailto:umair@lumenialab.com" className="px-12 py-6 bg-transparent border-2 border-black/10 text-black font-black text-xl rounded-full hover:bg-black hover:text-white transition-all">Send Email</a>
             </div>
          </div>
       </section>
 
-      {/* Floating WhatsApp Mobile CTA */}
-      <a 
-        href="https://wa.me/923354455494"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-8 right-8 z-[110] p-5 bg-[#25D366] text-white rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all md:hidden"
-        aria-label="Chat on WhatsApp"
-      >
-        <MessageCircle size={32} />
-      </a>
+      {/* FOOTER */}
+      <footer className="py-20 border-t border-black/5 bg-[#FCFCFA]">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-12">
+           <div className="text-xs font-black tracking-[0.2em] uppercase">UMAIR.DEV</div>
+           <div className="flex gap-10 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">
+              <a href="https://github.com/lumenialab-hub" target="_blank" className="hover:text-[#10b981] transition-colors">Github</a>
+              <a href="https://linkedin.com/in/umair-tufail" target="_blank" className="hover:text-[#10b981] transition-colors">Linkedin</a>
+              <a href="https://wa.me/923354455494" target="_blank" className="hover:text-[#10b981] transition-colors">WhatsApp</a>
+           </div>
+           <div className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-300">© 2026 Architectural Engineering Studio</div>
+        </div>
+      </footer>
+
+      {/* Mobile Menu */}
+      <div className={`fixed inset-0 bg-white z-[200] flex flex-col p-10 transition-transform duration-700 ease-in-out ${isMenuOpen ? "translate-y-0" : "-translate-y-full"}`}>
+         <div className="flex justify-between items-center mb-20">
+            <span className="font-black uppercase tracking-widest text-xl">UMAIR.DEV</span>
+            <button onClick={() => setIsMenuOpen(false)} className="p-4"><X size={32} /></button>
+         </div>
+         <div className="flex flex-col gap-10 text-6xl font-black tracking-tighter uppercase">
+            <a href="#work" onClick={() => setIsMenuOpen(false)}>Portfolio</a>
+            <a href="#about" onClick={() => setIsMenuOpen(false)}>Studio</a>
+            <a href="https://wa.me/923354455494">Contact</a>
+         </div>
+      </div>
     </div>
   );
 }
