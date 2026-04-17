@@ -427,5 +427,6 @@ export const PROJECTS: Project[] = [
       "Secure trade execution engine",
       "User-defined alert system",
     ],
+    tags: ["Laravel", "PHP", "MySQL", "Trading", "Analytics"],
   },
 ];
