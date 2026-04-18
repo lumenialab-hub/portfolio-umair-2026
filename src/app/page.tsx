@@ -3,7 +3,10 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { PROJECTS } from "../data/projects";
-import { Menu, X, ArrowRight, Calendar, MessageCircle, CheckCircle2, Zap, Trophy, Users } from "lucide-react";
+import { 
+  Menu, X, ArrowRight, Zap, Trophy, Users, Code2, 
+  Terminal, Globe, Database, Smartphone, Layout
+} from "lucide-react";
 import { motion, useInView } from "framer-motion";
 
 function Counter({ value, suffix = "", duration = 2 }: { value: number, suffix?: string, duration?: number }) {
@@ -17,13 +20,11 @@ function Counter({ value, suffix = "", duration = 2 }: { value: number, suffix?:
       const end = value;
       const totalMiliseconds = duration * 1000;
       const incrementTime = totalMiliseconds / end;
-
       const timer = setInterval(() => {
         start += 1;
-        setCount(start);
-        if (start === end) clearInterval(timer);
+        setCount(Math.min(start, end));
+        if (start >= end) clearInterval(timer);
       }, incrementTime);
-
       return () => clearInterval(timer);
     }
   }, [isInView, value, duration]);
@@ -44,14 +45,6 @@ export default function Home() {
 
   if (!mounted) return null;
 
-  const GithubIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.28 1.15-.28 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
-  );
-  
-  const LinkedinIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-  );
-
   return (
     <div className="bg-[#FCFCFA] text-[#1A1A1A] selection:bg-[#10b981] selection:text-white antialiased font-sans">
       {/* NAVBAR */}
@@ -65,112 +58,196 @@ export default function Home() {
           <div className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-bold">
             <a href="#work" className="hover:text-[#10b981] transition-colors">Portfolio</a>
             <a href="#about" className="hover:text-[#10b981] transition-colors">Studio</a>
-            <a href="https://wa.me/923354455494" className="px-5 py-2.5 bg-black text-white rounded-full hover:bg-[#10b981] transition-all">Free Call</a>
+            <a href="#experience" className="hover:text-[#10b981] transition-colors">Experience</a>
+            <a href="https://wa.me/923354455494" className="px-5 py-2.5 bg-black text-white rounded-full hover:bg-[#10b981] transition-all shadow-lg hover:-translate-y-0.5 font-black uppercase text-[10px] tracking-widest">Free Call</a>
           </div>
 
-          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
       </nav>
 
-      {/* HERO */}
-      <section className="pt-40 pb-20 px-6">
+      {/* HERO SECTION - REBUILT */}
+      <section className="pt-48 pb-32 px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-12 gap-16 items-center">
+            {/* Left Content */}
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="lg:col-span-7"
             >
-              <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8 uppercase text-black">
-                Let’s build <br />
-                something <span className="text-[#10b981] italic">legendary.</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#10b981]/10 text-[#10b981] rounded-full text-[10px] font-black uppercase tracking-widest mb-6">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]"></span>
+                </span>
+                Available for Q3 2026
+              </div>
+              <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.85] mb-8 uppercase text-black">
+                I build digital <br />
+                products that <span className="text-[#10b981] italic underline decoration-black/10">scale.</span>
               </h1>
-              <p className="text-xl text-gray-500 max-w-lg mb-12 leading-relaxed">
-                Architectural Engineering for founders. Specialized in Laravel backends and high-performance Next.js frontends.
+              <p className="text-lg md:text-xl text-gray-400 max-w-xl mb-12 leading-relaxed font-bold uppercase tracking-tight">
+                Senior Full-Stack Developer specializing in React, Next.js, and high-performance Laravel backends.
               </p>
               
               <div className="flex flex-wrap gap-4 mb-16">
-                 <a href="#work" className="px-8 py-4 bg-black text-white rounded-full font-bold flex items-center gap-2 hover:bg-[#10b981] transition-all group shadow-xl">
-                    View Portfolio <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                 <a href="#work" className="px-10 py-5 bg-[#10b981] text-black rounded-full font-black uppercase tracking-widest text-sm flex items-center gap-2 hover:bg-black hover:text-white transition-all shadow-xl hover:-translate-y-1">
+                    View Portfolio <ArrowRight size={18} />
                  </a>
-                 <div className="flex items-center gap-4 px-6 border-l border-gray-200">
-                    <a href="https://github.com/lumenialab-hub" target="_blank" className="hover:text-[#10b981] transition-colors"><GithubIcon /></a>
-                    <a href="https://linkedin.com/in/umair-tufail" target="_blank" className="hover:text-[#10b981] transition-colors"><LinkedinIcon /></a>
-                 </div>
+                 <a href="https://wa.me/923354455494" className="px-10 py-5 border-2 border-black text-black rounded-full font-black uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all hover:-translate-y-1">
+                    Contact Me
+                 </a>
               </div>
 
-              {/* STATS */}
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 pt-8 border-t border-black/5 uppercase">
+              {/* STATS BENTO */}
+              <div className="grid grid-cols-3 gap-8 pt-10 border-t border-black/5">
                 <div>
-                  <div className="text-4xl font-black mb-1"><Counter value={40} suffix="+" /></div>
-                  <div className="text-[10px] uppercase tracking-widest font-black text-gray-400">Projects Finished</div>
+                  <div className="text-4xl font-black mb-1 text-black"><Counter value={40} suffix="+" /></div>
+                  <div className="text-[9px] uppercase tracking-widest font-black text-gray-400">Projects Finished</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-black mb-1"><Counter value={100} suffix="%" /></div>
-                  <div className="text-[10px] uppercase tracking-widest font-black text-gray-400">Satisfaction</div>
+                  <div className="text-4xl font-black mb-1 text-black"><Counter value={65} suffix="%" /></div>
+                  <div className="text-[9px] uppercase tracking-widest font-black text-gray-400">Performance Boost</div>
                 </div>
-                <div className="hidden lg:block">
-                  <div className="text-4xl font-black mb-1">AVAILABLE</div>
-                  <div className="text-[10px] uppercase tracking-widest font-black text-gray-400">For New Projects</div>
+                <div>
+                  <div className="text-4xl font-black mb-1 text-black"><Counter value={100} suffix="%" /></div>
+                  <div className="text-[9px] uppercase tracking-widest font-black text-gray-400">Satisfaction</div>
                 </div>
               </div>
             </motion.div>
 
+            {/* Right Visuals */}
             <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="relative"
+              className="lg:col-span-5 relative"
             >
-              <div className="aspect-[4/5] rounded-[3rem] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl bg-gray-100 border-8 border-white">
-                 <img src="/umair-portrait.jpg" alt="Umair Tufail" className="w-full h-full object-cover" />
-              </div>
-              <div className="absolute -bottom-6 -right-6 bg-black text-white p-10 rounded-3xl shadow-2xl max-w-[280px] border border-white/10">
-                <p className="text-xs font-black leading-tight uppercase tracking-[0.1em]">"Everything I build is engineered for success and scaled for millions."</p>
-                <div className="mt-4 flex items-center gap-2">
-                   <div className="w-4 h-px bg-[#10b981]"></div>
-                   <span className="text-[9px] font-black text-[#10b981] uppercase tracking-widest">Umair Tufail</span>
+              {/* Premium Image Container */}
+              <div className="relative z-10">
+                <div className="aspect-[4/5] rounded-[3rem] overflow-hidden bg-gray-50 shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-8 border-white grayscale hover:grayscale-0 transition-all duration-700 group">
+                   <img src="/umair-portrait.jpg" alt="Umair Tufail" className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-700" />
                 </div>
+                
+                {/* Floating Code Flex */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1 }}
+                  className="absolute -bottom-8 -left-8 bg-white/90 backdrop-blur-xl p-8 rounded-[2rem] shadow-2xl border border-white/20 max-w-[260px]"
+                >
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                    </div>
+                  </div>
+                  <code className="text-xs font-black text-black block leading-loose">
+                    <span className="text-[#10b981]">const</span> build = () ={`>`} {'{'}<br />
+                    &nbsp;&nbsp;<span className="text-slate-400">"Clean. Fast. Scalable."</span><br />
+                    {'}'};
+                  </code>
+                </motion.div>
               </div>
+
+              {/* Background Glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[#10b981]/5 blur-3xl -z-10 rounded-full"></div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* COMPACT PROJECT GRID */}
-      <section id="work" className="py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-between items-end mb-16">
-            <div>
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#10b981] mb-2 block">Selected Work</span>
-              <h2 className="text-5xl font-black tracking-tighter uppercase">Portfolio</h2>
+      {/* ABOUT ME SECTION - NEW */}
+      <section id="about" className="py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-20">
+          <div className="md:col-span-5">
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#10b981] mb-6 block">The Persona</span>
+            <h2 className="text-5xl font-black tracking-tighter uppercase mb-8 leading-[0.9]">Full-Stack <br />Architect.</h2>
+          </div>
+          <div className="md:col-span-7">
+            <p className="text-2xl text-gray-700 font-black tracking-tight leading-snug mb-12 uppercase italic">
+              I BRIDGE THE GAP BETWEEN COMPLEX BACKEND LOGIC AND PIXEL-PERFECT INTERFACES.
+            </p>
+            <div className="grid grid-cols-2 gap-12 pt-12 border-t border-black/5">
+              <div>
+                <h4 className="font-black uppercase tracking-[0.3em] text-[10px] mb-6 text-[#10b981]">Expertise</h4>
+                <ul className="text-[11px] space-y-3 font-black uppercase tracking-widest text-gray-400">
+                   <li>SaaS Infrastructure</li>
+                   <li>Next.js Systems</li>
+                   <li>API Engineering</li>
+                   <li>UI/UX Strategy</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-black uppercase tracking-[0.3em] text-[10px] mb-6 text-[#10b981]">Philosophy</h4>
+                <ul className="text-[11px] space-y-3 font-black uppercase tracking-widest text-gray-400">
+                   <li>Performance First</li>
+                   <li>Scalable Design</li>
+                   <li>Modern Tech Stack</li>
+                   <li>Business Value</li>
+                </ul>
+              </div>
             </div>
-            <Link href="/projects" className="text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-black pb-1 hover:text-[#10b981] hover:border-[#10b981] transition-all">All Archive</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* TECH STACK SECTION */}
+      <section className="py-24 bg-[#FCFCFA] border-y border-black/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
+            {[
+              { label: "Frontend", tools: "Next.js, React, Tailwind" },
+              { label: "Backend", tools: "Laravel, PHP, Node.js" },
+              { label: "Cloud", tools: "AWS, Redis, Docker" },
+              { label: "Design", tools: "Figma, UI/UX, Motion" }
+            ].map(stack => (
+              <div key={stack.label}>
+                <div className="text-[9px] font-black uppercase tracking-widest text-gray-300 mb-3">{stack.label}</div>
+                <div className="text-lg font-black uppercase tracking-tighter text-black">{stack.tools}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PORTFOLIO GRID */}
+      <section id="work" className="py-40 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#10b981] mb-2 block">Projects</span>
+              <h2 className="text-7xl font-black tracking-tighter uppercase whitespace-nowrap">Selected Work</h2>
+            </div>
+            <Link href="/projects" className="text-[10px] font-black uppercase tracking-[0.3em] border-b-4 border-[#10b981] pb-2 hover:text-black hover:border-black transition-all">Explore All Archives</Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProjects.map((project, idx) => (
               project && (
                 <motion.div 
                   key={project.slug}
-                  whileHover={{ y: -8 }}
-                  className="group bg-[#FCFCFA] rounded-[2.5rem] overflow-hidden border border-black/5 hover:border-[#10b981]/20 transition-all duration-500 shadow-sm hover:shadow-2xl"
+                  whileHover={{ y: -15 }}
+                  className="group bg-[#FCFCFA] rounded-[3rem] overflow-hidden border border-black/5 transition-all duration-700 shadow-sm hover:shadow-2xl"
                 >
-                  <Link href={`/projects/${project.slug}`} className="block aspect-[16/10] overflow-hidden relative">
-                    <img src={project.thumbnail || project.images?.[0]} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                       <span className="px-5 py-2.5 bg-white text-black text-[9px] font-black uppercase tracking-[0.2em] rounded-full shadow-lg">View Project</span>
+                  <Link href={`/projects/${project.slug}`} className="block aspect-[1.4] overflow-hidden relative">
+                    <img src={project.thumbnail || project.images?.[0]} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 grayscale group-hover:grayscale-0" />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                       <span className="px-8 py-4 bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-2xl">Case Study</span>
                     </div>
                   </Link>
                   <div className="p-10">
-                    <div className="text-[9px] font-black uppercase tracking-[0.2em] text-[#10b981] mb-3">{project.niche}</div>
-                    <h3 className="text-xl font-bold mb-4 line-clamp-1 group-hover:text-[#10b981] transition-colors">{project.title}</h3>
-                    <p className="text-xs text-gray-400 mb-8 line-clamp-2 leading-relaxed uppercase tracking-tight font-medium">{project.problem}</p>
+                    <div className="text-[9px] font-black uppercase tracking-[0.3em] text-[#10b981] mb-4">{project.niche}</div>
+                    <h3 className="text-2xl font-black mb-6 line-clamp-1 group-hover:text-[#10b981] transition-colors">{project.title}</h3>
+                    <p className="text-[11px] text-gray-400 mb-10 line-clamp-2 leading-relaxed uppercase font-black tracking-widest">{project.problem}</p>
                     <div className="flex flex-wrap gap-2">
-                       {project.stack.split(",").slice(0,3).map(s => (
-                         <span key={s} className="px-3 py-1.5 bg-black/5 rounded-lg text-[8px] font-black uppercase tracking-wider text-gray-500">{s.trim()}</span>
+                       {project.stack.split(",").slice(0,2).map(s => (
+                         <span key={s} className="px-4 py-2 bg-black text-white rounded-lg text-[8px] font-black uppercase tracking-[0.2em] leading-none">{s.trim()}</span>
                        ))}
                     </div>
                   </div>
@@ -181,63 +258,74 @@ export default function Home() {
         </div>
       </section>
 
-      {/* RESULTS GRID COMPACT */}
-      <section className="py-24 bg-black text-white">
+      {/* EXPERIENCE SECTION */}
+      <section id="experience" className="py-32 bg-[#FCFCFA]">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-16">
-            <div className="flex flex-col items-center text-center">
-              <Zap className="text-[#10b981] mb-8" size={32} />
-              <h3 className="text-lg font-black uppercase tracking-widest mb-4">Fast Performance</h3>
-              <p className="text-gray-500 leading-relaxed text-xs uppercase tracking-wider font-medium">Next.js 15 apps optimized for speed and high-level user retention.</p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <Trophy className="text-[#10b981] mb-8" size={32} />
-              <h3 className="text-lg font-black uppercase tracking-widest mb-4">Scalable Schema</h3>
-              <p className="text-gray-500 leading-relaxed text-xs uppercase tracking-wider font-medium">Laravel backends designed for enterprise-grade growth and security.</p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <Users className="text-[#10b981] mb-8" size={32} />
-              <h3 className="text-lg font-black uppercase tracking-widest mb-4">Full Satisfaction</h3>
-              <p className="text-gray-500 leading-relaxed text-xs uppercase tracking-wider font-medium">100% focused on business goals and measurable conversion results.</p>
-            </div>
+          <div className="mb-24">
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#10b981] mb-4 block">History</span>
+            <h2 className="text-6xl font-black tracking-tighter uppercase">Work Timeline</h2>
+          </div>
+          <div className="space-y-4">
+            {[
+              { role: "Senior Freelance Engineer", date: "2023 - 2026", desc: "Crafting scalable digital assets for founders." },
+              { role: "Full-Stack Developer", date: "2021 - 2023", desc: "Expertise in TALL stack & SaaS development." },
+              { role: "Product Specialist", date: "2019 - 2021", desc: "UI/UX engineering and performance optimization." }
+            ].map((exp, idx) => (
+              <div key={idx} className="group flex flex-col md:flex-row md:items-center justify-between p-12 border-b border-black/5 hover:bg-white transition-all rounded-[2.5rem]">
+                <div>
+                   <span className="text-[10px] font-black text-[#10b981] uppercase tracking-[0.3em] block mb-2">{exp.date}</span>
+                   <h3 className="text-4xl font-black tracking-tighter uppercase">{exp.role}</h3>
+                </div>
+                <p className="text-gray-400 font-black uppercase text-[11px] tracking-widest mt-4 md:mt-0">{exp.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* STUDIO CTA */}
-      <section id="about" className="py-40 bg-white">
-         <div className="max-w-4xl mx-auto px-6 text-center">
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#10b981] mb-8 block">Project Inquiry</span>
-            <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-16 leading-none">Ready for the<br />Next Step?</h2>
-            <div className="flex flex-col md:flex-row gap-6 justify-center">
-               <a href="https://wa.me/923354455494" className="px-12 py-6 bg-[#10b981] text-black font-black text-xl rounded-full hover:scale-105 transition-all shadow-xl">Get Started</a>
-               <a href="mailto:umair@lumenialab.com" className="px-12 py-6 bg-transparent border-2 border-black/10 text-black font-black text-xl rounded-full hover:bg-black hover:text-white transition-all">Send Email</a>
+      {/* CONTACT SECTION */}
+      <section className="py-40 bg-white">
+         <div className="max-w-7xl mx-auto px-6">
+            <div className="bg-black text-white p-20 rounded-[4rem] relative overflow-hidden">
+               <div className="relative z-10 grid lg:grid-cols-2 gap-24 items-center">
+                  <div className="text-center lg:text-left">
+                    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#10b981] mb-10 block">Available Now</span>
+                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter uppercase mb-16 leading-[0.8]">Let’s build <br />something <br /><span className="text-[#10b981] italic">Legendary.</span></h2>
+                    <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+                       <a href="https://wa.me/923354455494" className="px-14 py-8 bg-[#10b981] text-black font-black text-xl rounded-full hover:scale-105 transition-all shadow-[0_20px_50px_rgba(16,185,129,0.4)] uppercase tracking-tighter">Get Started</a>
+                       <a href="mailto:umair@lumenialab.com" className="px-14 py-8 bg-transparent border-2 border-white/20 text-white font-black text-xl rounded-full hover:bg-white hover:text-black transition-all uppercase tracking-tighter">Email Me</a>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center lg:items-end gap-8">
+                     <div className="flex flex-col items-center lg:items-end gap-4">
+                        <a href="https://github.com/lumenialab-hub" className="text-5xl font-black uppercase tracking-tighter hover:text-[#10b981] transition-all">GitHub</a>
+                        <a href="https://linkedin.com/in/umair-tufail" className="text-5xl font-black uppercase tracking-tighter hover:text-[#10b981] transition-all">LinkedIn</a>
+                     </div>
+                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 mt-10">© Architectural Engineering 2026</p>
+                  </div>
+               </div>
+               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#10b981]/10 blur-[150px] rounded-full -mr-40 -mt-40"></div>
             </div>
          </div>
       </section>
 
       {/* FOOTER */}
       <footer className="py-20 border-t border-black/5 bg-[#FCFCFA]">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-12">
-           <div className="text-xs font-black tracking-[0.2em] uppercase">UMAIR.DEV</div>
-           <div className="flex gap-10 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">
-              <a href="https://github.com/lumenialab-hub" target="_blank" className="hover:text-[#10b981] transition-colors">Github</a>
-              <a href="https://linkedin.com/in/umair-tufail" target="_blank" className="hover:text-[#10b981] transition-colors">Linkedin</a>
-              <a href="https://wa.me/923354455494" target="_blank" className="hover:text-[#10b981] transition-colors">WhatsApp</a>
-           </div>
-           <div className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-300">© 2026 Architectural Engineering Studio</div>
+        <div className="max-w-7xl mx-auto px-6 text-center text-[10px] font-black uppercase tracking-[0.6em] text-gray-300">
+           Digital Asset Engineering • Crafted for Founders
         </div>
       </footer>
 
-      {/* Mobile Menu */}
-      <div className={`fixed inset-0 bg-white z-[200] flex flex-col p-10 transition-transform duration-700 ease-in-out ${isMenuOpen ? "translate-y-0" : "-translate-y-full"}`}>
-         <div className="flex justify-between items-center mb-20">
-            <span className="font-black uppercase tracking-widest text-xl">UMAIR.DEV</span>
-            <button onClick={() => setIsMenuOpen(false)} className="p-4"><X size={32} /></button>
+      {/* MOBILE MENU */}
+      <div className={`fixed inset-0 bg-white z-[200] flex flex-col p-12 transition-all duration-700 ease-in-out ${isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}>
+         <div className="flex justify-between items-center mb-24">
+            <span className="font-black uppercase tracking-widest text-2xl">UMAIR.DEV</span>
+            <button onClick={() => setIsMenuOpen(false)} className="p-4 bg-gray-50 rounded-full"><X size={32} /></button>
          </div>
          <div className="flex flex-col gap-10 text-6xl font-black tracking-tighter uppercase">
             <a href="#work" onClick={() => setIsMenuOpen(false)}>Portfolio</a>
-            <a href="#about" onClick={() => setIsMenuOpen(false)}>Studio</a>
+            <a href="#about" onClick={() => setIsMenuOpen(false)}>About</a>
+            <a href="#experience" onClick={() => setIsMenuOpen(false)}>Timeline</a>
             <a href="https://wa.me/923354455494">Contact</a>
          </div>
       </div>
