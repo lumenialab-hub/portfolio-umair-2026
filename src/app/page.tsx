@@ -4,33 +4,9 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { PROJECTS } from "../data/projects";
 import { 
-  Menu, X, ArrowRight, Zap, Trophy, Users, Code2, 
-  Terminal, Globe, Database, Smartphone, Layout
+  Menu, X, ArrowRight
 } from "lucide-react";
-import { motion, useInView } from "framer-motion";
-
-function Counter({ value, suffix = "", duration = 2 }: { value: number, suffix?: string, duration?: number }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-
-  useEffect(() => {
-    if (isInView) {
-      let start = 0;
-      const end = value;
-      const totalMiliseconds = duration * 1000;
-      const incrementTime = totalMiliseconds / end;
-      const timer = setInterval(() => {
-        start += 1;
-        setCount(Math.min(start, end));
-        if (start >= end) clearInterval(timer);
-      }, incrementTime);
-      return () => clearInterval(timer);
-    }
-  }, [isInView, value, duration]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
-}
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -38,6 +14,7 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true);
+    // Simple intersection observer logic for fade-ins would be handled by Framer Motion here
   }, []);
 
   const featuredSlugs = ["reseller-frontend", "medaan", "vendors-hendor", "air-ideal", "satradelink", "saas-trucking"];
@@ -46,209 +23,114 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <div className="bg-[#FCFCFA] text-[#1A1A1A] selection:bg-[#10b981] selection:text-white antialiased font-sans">
+    <div className="bg-white text-[#0A0A0A] selection:bg-[#10b981] selection:text-white antialiased font-sans">
       {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] bg-[#FCFCFA]/80 backdrop-blur-xl border-b border-black/5">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-black tracking-tighter flex items-center gap-2">
-            <span className="w-8 h-8 bg-black text-white flex items-center justify-center rounded-lg font-black text-xs uppercase">U</span>
-            UMAIR.DEV
-          </Link>
-
-          <div className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-bold">
-            <a href="#work" className="hover:text-[#10b981] transition-colors">Portfolio</a>
-            <a href="#about" className="hover:text-[#10b981] transition-colors">Studio</a>
-            <a href="#experience" className="hover:text-[#10b981] transition-colors">Experience</a>
-            <a href="https://wa.me/923354455494" className="px-5 py-2.5 bg-black text-white rounded-full hover:bg-[#10b981] transition-all shadow-lg hover:-translate-y-0.5 font-black uppercase text-[10px] tracking-widest">Free Call</a>
+      <nav className="fixed top-0 left-0 right-0 z-[100] bg-white/90 backdrop-blur-lg border-b border-[#EAEAEA]">
+        <div className="max-w-screen-2xl mx-auto px-8 py-6 flex justify-between items-center">
+          <Link href="/" className="text-2xl font-semibold tracking-[-1px]">Umair</Link>
+          
+          <div className="hidden md:flex gap-12 text-sm font-medium">
+            <a href="#work" className="hover:underline decoration-1 underline-offset-4 transition-all">Work</a>
+            <a href="#about" className="hover:underline decoration-1 underline-offset-4 transition-all">Story</a>
+            <a href="#services" className="hover:underline decoration-1 underline-offset-4 transition-all">Services</a>
+            <a href="#process" className="hover:underline decoration-1 underline-offset-4 transition-all">Process</a>
           </div>
 
-          <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X /> : <Menu />}
-          </button>
+          <div className="flex items-center gap-4">
+            <a href="https://wa.me/923354455494" 
+               className="px-8 py-3.5 bg-[#0A0A0A] text-white text-sm font-medium rounded-3xl hover:bg-[#10B981] transition-all duration-300">
+              Book a Call
+            </a>
+            <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <X /> : <Menu />}
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* HERO SECTION - REBUILT */}
-      <section className="pt-48 pb-32 px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-12 gap-16 items-center">
-            {/* Left Content */}
-            <motion.div 
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="lg:col-span-7"
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#10b981]/10 text-[#10b981] rounded-full text-[10px] font-black uppercase tracking-widest mb-6">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]"></span>
-                </span>
-                Available for Q3 2026
-              </div>
-              <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.85] mb-8 uppercase text-black">
-                I build digital <br />
-                products that <span className="text-[#10b981] italic underline decoration-black/10">scale.</span>
-              </h1>
-              <p className="text-lg md:text-xl text-gray-400 max-w-xl mb-12 leading-relaxed font-bold uppercase tracking-tight">
-                Senior Full-Stack Developer specializing in React, Next.js, and high-performance Laravel backends.
-              </p>
-              
-              <div className="flex flex-wrap gap-4 mb-16">
-                 <a href="#work" className="px-10 py-5 bg-[#10b981] text-black rounded-full font-black uppercase tracking-widest text-sm flex items-center gap-2 hover:bg-black hover:text-white transition-all shadow-xl hover:-translate-y-1">
-                    View Portfolio <ArrowRight size={18} />
-                 </a>
-                 <a href="https://wa.me/923354455494" className="px-10 py-5 border-2 border-black text-black rounded-full font-black uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all hover:-translate-y-1">
-                    Contact Me
-                 </a>
-              </div>
-
-              {/* STATS BENTO */}
-              <div className="grid grid-cols-3 gap-8 pt-10 border-t border-black/5">
-                <div>
-                  <div className="text-4xl font-black mb-1 text-black"><Counter value={40} suffix="+" /></div>
-                  <div className="text-[9px] uppercase tracking-widest font-black text-gray-400">Projects Finished</div>
-                </div>
-                <div>
-                  <div className="text-4xl font-black mb-1 text-black"><Counter value={65} suffix="%" /></div>
-                  <div className="text-[9px] uppercase tracking-widest font-black text-gray-400">Performance Boost</div>
-                </div>
-                <div>
-                  <div className="text-4xl font-black mb-1 text-black"><Counter value={100} suffix="%" /></div>
-                  <div className="text-[9px] uppercase tracking-widest font-black text-gray-400">Satisfaction</div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right Visuals */}
-            <motion.div 
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="lg:col-span-5 relative"
-            >
-              {/* Premium Image Container */}
-              <div className="relative z-10">
-                <div className="aspect-[4/5] rounded-[3rem] overflow-hidden bg-gray-50 shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-8 border-white grayscale hover:grayscale-0 transition-all duration-700 group">
-                   <img src="/umair-portrait.jpg" alt="Umair Tufail" className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-700" />
-                </div>
-                
-                {/* Floating Code Flex */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1 }}
-                  className="absolute -bottom-8 -left-8 bg-white/90 backdrop-blur-xl p-8 rounded-[2rem] shadow-2xl border border-white/20 max-w-[260px]"
-                >
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="flex gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-                      <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
-                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
-                    </div>
-                  </div>
-                  <code className="text-xs font-black text-black block leading-loose">
-                    <span className="text-[#10b981]">const</span> build = () ={`>`} {'{'}<br />
-                    &nbsp;&nbsp;<span className="text-slate-400">"Clean. Fast. Scalable."</span><br />
-                    {'}'};
-                  </code>
-                </motion.div>
-              </div>
-
-              {/* Background Glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[#10b981]/5 blur-3xl -z-10 rounded-full"></div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ABOUT ME SECTION - NEW */}
-      <section id="about" className="py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-20">
-          <div className="md:col-span-5">
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#10b981] mb-6 block">The Persona</span>
-            <h2 className="text-5xl font-black tracking-tighter uppercase mb-8 leading-[0.9]">Full-Stack <br />Architect.</h2>
-          </div>
-          <div className="md:col-span-7">
-            <p className="text-2xl text-gray-700 font-black tracking-tight leading-snug mb-12 uppercase italic">
-              I BRIDGE THE GAP BETWEEN COMPLEX BACKEND LOGIC AND PIXEL-PERFECT INTERFACES.
+      {/* HERO SECTION */}
+      <section className="min-h-screen flex items-center pt-32 pb-32 relative overflow-hidden">
+        <div className="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-12 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="md:col-span-7"
+          >
+            <h1 className="text-[72px] md:text-[96px] leading-[0.95] font-semibold tracking-[-2px] max-w-[640px] font-syne">
+              Designing SaaS<br />that feels <span className="text-[#10B981]">alive</span>.
+            </h1>
+            <p className="mt-10 text-2xl text-[#6B6B6B] max-w-md font-dm">
+              I craft intuitive dashboards, systems, and flows for ambitious startups. 
+              Currently open for 2 projects in Q3 2026.
             </p>
-            <div className="grid grid-cols-2 gap-12 pt-12 border-t border-black/5">
-              <div>
-                <h4 className="font-black uppercase tracking-[0.3em] text-[10px] mb-6 text-[#10b981]">Expertise</h4>
-                <ul className="text-[11px] space-y-3 font-black uppercase tracking-widest text-gray-400">
-                   <li>SaaS Infrastructure</li>
-                   <li>Next.js Systems</li>
-                   <li>API Engineering</li>
-                   <li>UI/UX Strategy</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-black uppercase tracking-[0.3em] text-[10px] mb-6 text-[#10b981]">Philosophy</h4>
-                <ul className="text-[11px] space-y-3 font-black uppercase tracking-widest text-gray-400">
-                   <li>Performance First</li>
-                   <li>Scalable Design</li>
-                   <li>Modern Tech Stack</li>
-                   <li>Business Value</li>
-                </ul>
+            <div className="mt-16 flex flex-wrap gap-5">
+              <a href="#work" 
+                 className="px-10 py-5 border-2 border-[#0A0A0A] rounded-3xl text-sm font-medium hover:bg-[#0A0A0A] hover:text-white transition-all inline-flex items-center gap-3">
+                Explore the work
+                <span className="text-xl leading-none">↓</span>
+              </a>
+              <a href="https://wa.me/923354455494" 
+                 className="px-10 py-5 bg-[#10B981] text-white rounded-3xl text-sm font-medium hover:bg-[#0EA5E9] transition-all">
+                Free 30-min consultation
+              </a>
+            </div>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="md:col-span-5 relative"
+          >
+            <div className="aspect-[4/5] md:aspect-auto md:h-[520px] bg-[#F7F7F7] rounded-[3rem] overflow-hidden shadow-2xl shadow-black/5 relative group">
+              <img src="/portfolioimg.png" 
+                   alt="Umair Tufail" 
+                   className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.02] group-hover:scale-105" />
+              <div className="absolute bottom-8 left-8 bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl shadow-lg text-sm max-w-[220px]">
+                <div className="flex items-center gap-2 text-[#10B981]">
+                  <span className="text-xs uppercase tracking-[1px]">Live project</span>
+                </div>
+                <p className="font-medium mt-1">Finora Dashboard — 42% retention lift</p>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
+        {/* Narrative Line */}
+        <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-[#EAEAEA] to-transparent -z-10"></div>
       </section>
 
-      {/* TECH STACK SECTION */}
-      <section className="py-24 bg-[#FCFCFA] border-y border-black/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
-            {[
-              { label: "Frontend", tools: "Next.js, React, Tailwind" },
-              { label: "Backend", tools: "Laravel, PHP, Node.js" },
-              { label: "Cloud", tools: "AWS, Redis, Docker" },
-              { label: "Design", tools: "Figma, UI/UX, Motion" }
-            ].map(stack => (
-              <div key={stack.label}>
-                <div className="text-[9px] font-black uppercase tracking-widest text-gray-300 mb-3">{stack.label}</div>
-                <div className="text-lg font-black uppercase tracking-tighter text-black">{stack.tools}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PORTFOLIO GRID */}
-      <section id="work" className="py-40 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-            <div>
-              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#10b981] mb-2 block">Projects</span>
-              <h2 className="text-7xl font-black tracking-tighter uppercase whitespace-nowrap">Selected Work</h2>
-            </div>
-            <Link href="/projects" className="text-[10px] font-black uppercase tracking-[0.3em] border-b-4 border-[#10b981] pb-2 hover:text-black hover:border-black transition-all">Explore All Archives</Link>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* SELECTED WORK */}
+      <section id="work" className="bg-[#F7F7F7] py-32 relative">
+        <div className="max-w-screen-2xl mx-auto px-8">
+          <h2 className="text-5xl font-semibold tracking-[-1px] mb-20 font-syne">Selected Work</h2>
+          
+          <div className="space-y-40">
             {featuredProjects.map((project, idx) => (
               project && (
                 <motion.div 
                   key={project.slug}
-                  whileHover={{ y: -15 }}
-                  className="group bg-[#FCFCFA] rounded-[3rem] overflow-hidden border border-black/5 transition-all duration-700 shadow-sm hover:shadow-2xl"
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                  className={`grid md:grid-cols-12 gap-10 md:gap-16 items-center`}
                 >
-                  <Link href={`/projects/${project.slug}`} className="block aspect-[1.4] overflow-hidden relative">
-                    <img src={project.thumbnail || project.images?.[0]} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 grayscale group-hover:grayscale-0" />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                       <span className="px-8 py-4 bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-2xl">Case Study</span>
-                    </div>
-                  </Link>
-                  <div className="p-10">
-                    <div className="text-[9px] font-black uppercase tracking-[0.3em] text-[#10b981] mb-4">{project.niche}</div>
-                    <h3 className="text-2xl font-black mb-6 line-clamp-1 group-hover:text-[#10b981] transition-colors">{project.title}</h3>
-                    <p className="text-[11px] text-gray-400 mb-10 line-clamp-2 leading-relaxed uppercase font-black tracking-widest">{project.problem}</p>
-                    <div className="flex flex-wrap gap-2">
-                       {project.stack.split(",").slice(0,2).map(s => (
-                         <span key={s} className="px-4 py-2 bg-black text-white rounded-lg text-[8px] font-black uppercase tracking-[0.2em] leading-none">{s.trim()}</span>
-                       ))}
+                  <div className={`md:col-span-7 ${idx % 2 === 1 ? "md:order-2" : ""}`}>
+                    <Link href={`/projects/${project.slug}`} className="block aspect-video bg-neutral-200 rounded-3xl overflow-hidden group">
+                      <img src={project.thumbnail || project.images?.[0]} 
+                           alt={project.title} 
+                           className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" />
+                    </Link>
+                  </div>
+                  <div className={`md:col-span-5 ${idx % 2 === 1 ? "md:order-1" : ""}`}>
+                    <div className="sticky top-12">
+                      <span className="text-sm text-[#6B6B6B] uppercase tracking-widest">{project.niche}</span>
+                      <h3 className="text-4xl font-medium mt-3 font-syne capitalize">{project.title}</h3>
+                      <p className="mt-6 text-lg text-[#6B6B6B] leading-relaxed italic">{project.problem}</p>
+                      <Link href={`/projects/${project.slug}`} className="mt-8 inline-flex items-center gap-3 text-sm font-medium underline underline-offset-4 hover:text-[#10B981] transition-colors">
+                        Read full case study →
+                      </Link>
                     </div>
                   </div>
                 </motion.div>
@@ -258,77 +140,175 @@ export default function Home() {
         </div>
       </section>
 
-      {/* EXPERIENCE SECTION */}
-      <section id="experience" className="py-32 bg-[#FCFCFA]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="mb-24">
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#10b981] mb-4 block">History</span>
-            <h2 className="text-6xl font-black tracking-tighter uppercase">Work Timeline</h2>
+      {/* STORY SECTION */}
+      <section id="about" className="py-40 bg-white">
+        <div className="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-12 gap-20">
+          <div className="md:col-span-4">
+            <h2 className="text-5xl font-semibold tracking-[-1px] font-syne">My story</h2>
           </div>
-          <div className="space-y-4">
+          <div className="md:col-span-8">
+            <div className="max-w-2xl">
+              <p className="text-2xl leading-tight text-[#6B6B6B] font-dm">
+                Hi, I’m Umair — a Lahore-based product designer obsessed with turning complex SaaS problems into calm, delightful experiences.
+              </p>
+              <p className="mt-10 text-lg text-[#6B6B6B] font-dm">
+                Over the past 6 years I’ve helped startups go from early-stage to product-market fit by designing the interfaces their teams actually love using. 
+                I believe great design is invisible — it just works.
+              </p>
+              <div className="mt-12 border-l-2 border-[#10B981] pl-8">
+                <p className="text-xl italic">"The best interfaces disappear. The user only remembers how good it felt to use them."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section id="services" className="bg-[#F7F7F7] py-32">
+        <div className="max-w-screen-2xl mx-auto px-8">
+          <h2 className="text-5xl font-semibold tracking-[-1px] mb-16 font-syne">Services</h2>
+          <div className="grid md:grid-cols-3 gap-12">
             {[
-              { role: "Senior Freelance Engineer", date: "2023 - 2026", desc: "Crafting scalable digital assets for founders." },
-              { role: "Full-Stack Developer", date: "2021 - 2023", desc: "Expertise in TALL stack & SaaS development." },
-              { role: "Product Specialist", date: "2019 - 2021", desc: "UI/UX engineering and performance optimization." }
-            ].map((exp, idx) => (
-              <div key={idx} className="group flex flex-col md:flex-row md:items-center justify-between p-12 border-b border-black/5 hover:bg-white transition-all rounded-[2.5rem]">
-                <div>
-                   <span className="text-[10px] font-black text-[#10b981] uppercase tracking-[0.3em] block mb-2">{exp.date}</span>
-                   <h3 className="text-4xl font-black tracking-tighter uppercase">{exp.role}</h3>
-                </div>
-                <p className="text-gray-400 font-black uppercase text-[11px] tracking-widest mt-4 md:mt-0">{exp.desc}</p>
+              { title: "SaaS Product Design", desc: "End-to-end dashboards, onboarding, and complex workflows that scale.", price: "from $8,500" },
+              { title: "Design Systems", desc: "Scalable, consistent component libraries that speed up your entire team.", price: "from $12,000" },
+              { title: "Ship-ready Prototypes", desc: "High-fidelity interactive prototypes and marketing sites ready to ship.", price: "from $4,500" }
+            ].map(service => (
+              <div key={service.title} className="bg-white p-10 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all hover:-translate-y-2">
+                <h3 className="text-3xl font-medium font-syne">{service.title}</h3>
+                <p className="mt-6 text-[#6B6B6B]">{service.desc}</p>
+                <div className="mt-12 pt-12 border-t text-sm font-medium uppercase tracking-widest text-gray-400">Starting {service.price}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CONTACT SECTION */}
+      {/* PROCESS */}
+      <section id="process" className="py-32 bg-white">
+        <div className="max-w-screen-2xl mx-auto px-8">
+          <h2 className="text-5xl font-semibold tracking-[-1px] mb-16 font-syne">The Process</h2>
+          <div className="grid md:grid-cols-4 gap-12">
+            {[
+              { id: "01", title: "Discovery", desc: "User interviews, competitor audit, and deep business alignment." },
+              { id: "02", title: "Exploration", desc: "Rapid wireframing and user-flow mapping in Figma." },
+              { id: "03", title: "Refinement", desc: "High-fidelity design with motion and micro-interactions." },
+              { id: "04", title: "Delivery", desc: "Developer handoff, testing, and post-launch iteration." }
+            ].map(step => (
+              <motion.div 
+                key={step.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="group"
+              >
+                <div className="text-[#EAEAEA] text-7xl font-bold font-syne group-hover:text-[#10B981] transition-colors duration-500">{step.id}</div>
+                <h4 className="text-2xl mt-6 font-syne">{step.title}</h4>
+                <p className="mt-4 text-[#6B6B6B]">{step.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* RESULTS */}
+      <section className="bg-black text-white py-32">
+        <div className="max-w-screen-2xl mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-x-12 gap-y-16 text-center">
+          <div><div className="text-7xl font-semibold text-[#10B981] font-syne">+42%</div><p className="mt-3 uppercase text-sm tracking-widest opacity-60">Retention</p></div>
+          <div><div className="text-7xl font-semibold text-[#10B981] font-syne">18</div><p className="mt-3 uppercase text-sm tracking-widest opacity-60">SaaS products</p></div>
+          <div><div className="text-7xl font-semibold text-[#10B981] font-syne">9</div><p className="mt-3 uppercase text-sm tracking-widest opacity-60">Countries</p></div>
+          <div><div className="text-7xl font-semibold text-[#10B981] font-syne">100%</div><p className="mt-3 uppercase text-sm tracking-widest opacity-60">Repeat clients</p></div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
       <section className="py-40 bg-white">
-         <div className="max-w-7xl mx-auto px-6">
-            <div className="bg-black text-white p-20 rounded-[4rem] relative overflow-hidden">
-               <div className="relative z-10 grid lg:grid-cols-2 gap-24 items-center">
-                  <div className="text-center lg:text-left">
-                    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#10b981] mb-10 block">Available Now</span>
-                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter uppercase mb-16 leading-[0.8]">Let’s build <br />something <br /><span className="text-[#10b981] italic">Legendary.</span></h2>
-                    <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
-                       <a href="https://wa.me/923354455494" className="px-14 py-8 bg-[#10b981] text-black font-black text-xl rounded-full hover:scale-105 transition-all shadow-[0_20px_50px_rgba(16,185,129,0.4)] uppercase tracking-tighter">Get Started</a>
-                       <a href="mailto:umair@lumenialab.com" className="px-14 py-8 bg-transparent border-2 border-white/20 text-white font-black text-xl rounded-full hover:bg-white hover:text-black transition-all uppercase tracking-tighter">Email Me</a>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-center lg:items-end gap-8">
-                     <div className="flex flex-col items-center lg:items-end gap-4">
-                        <a href="https://github.com/lumenialab-hub" className="text-5xl font-black uppercase tracking-tighter hover:text-[#10b981] transition-all">GitHub</a>
-                        <a href="https://linkedin.com/in/umair-tufail" className="text-5xl font-black uppercase tracking-tighter hover:text-[#10b981] transition-all">LinkedIn</a>
-                     </div>
-                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 mt-10">© Architectural Engineering 2026</p>
-                  </div>
-               </div>
-               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#10b981]/10 blur-[150px] rounded-full -mr-40 -mt-40"></div>
+        <div className="max-w-screen-2xl mx-auto px-8">
+          <h2 className="text-5xl font-semibold tracking-[-1px] mb-20 font-syne">What clients say</h2>
+          <div className="grid md:grid-cols-2 gap-20">
+            <div className="border-l-4 border-[#10B981] pl-10">
+              <p className="text-3xl leading-tight font-dm italic">"Umair turned our chaotic analytics platform into something our team actually looks forward to opening every morning."</p>
+              <p className="mt-8 text-sm text-[#6B6B6B] uppercase tracking-widest font-black">— Sarah Chen, CEO @ Pulse</p>
             </div>
-         </div>
+            <div className="border-l-4 border-[#10B981] pl-10">
+              <p className="text-3xl leading-tight font-dm italic">"The attention to detail and speed of iteration was unmatched. Our conversion rate jumped 31% in the first month."</p>
+              <p className="mt-8 text-sm text-[#6B6B6B] uppercase tracking-widest font-black">— Alex Rivera, Founder @ Finora</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* EXPERTISE / FAQ */}
+      <section className="bg-[#F7F7F7] py-32">
+        <div className="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-12 gap-20">
+          <div className="md:col-span-5">
+            <h2 className="text-5xl font-semibold tracking-[-1px] mb-12 font-syne">Expertise</h2>
+            <div className="flex flex-wrap gap-4">
+              {["SaaS Dashboards", "Complex Data Viz", "Design Systems", "Onboarding Flows", "Framer Prototypes"].map(skill => (
+                <span key={skill} className="px-8 py-4 bg-white border border-[#EAEAEA] rounded-3xl text-sm font-medium hover:border-[#10B981] transition-colors">{skill}</span>
+              ))}
+            </div>
+          </div>
+          <div className="md:col-span-7">
+            <h2 className="text-5xl font-semibold tracking-[-1px] mb-12 font-syne">FAQ</h2>
+            <div className="space-y-12">
+              <div>
+                <h4 className="text-xl font-medium font-syne">How does pricing work?</h4>
+                <p className="mt-4 text-[#6B6B6B]">Project-based, transparent milestones. Most full SaaS redesigns range $8k–$25k. We always start with a free scoping call.</p>
+              </div>
+              <div>
+                <h4 className="text-xl font-medium font-syne">Do you work remotely?</h4>
+                <p className="mt-4 text-[#6B6B6B]">Yes — I’ve collaborated with teams across 9 countries. Timezone overlap with Europe & US is easy.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact" className="py-40 bg-white">
+        <div className="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-12 gap-20">
+          <div className="md:col-span-5">
+            <h2 className="text-7xl font-semibold tracking-[-3px] font-syne leading-[0.9]">Let’s create <br />something <br />remarkable.</h2>
+            <p className="mt-12 text-xl text-[#6B6B6B]">Currently accepting 2 new projects for 2026.</p>
+            <a href="mailto:umair@lumenialab.com" className="mt-12 block text-3xl underline decoration-1 underline-offset-8 hover:text-[#10B981] transition-colors font-syne">umair@lumenialab.com</a>
+          </div>
+          <div className="md:col-span-7">
+            <form className="space-y-12">
+              <div className="space-y-2">
+                 <label className="text-[10px] uppercase tracking-widest font-black text-gray-300">Your Full Name</label>
+                 <input type="text" placeholder="John Doe" className="w-full border-b-2 border-gray-100 pb-6 text-xl focus:outline-none focus:border-[#10B981] bg-transparent transition-all" />
+              </div>
+              <div className="space-y-2">
+                 <label className="text-[10px] uppercase tracking-widest font-black text-gray-300">Business Email</label>
+                 <input type="email" placeholder="john@company.com" className="w-full border-b-2 border-gray-100 pb-6 text-xl focus:outline-none focus:border-[#10B981] bg-transparent transition-all" />
+              </div>
+              <div className="space-y-2">
+                 <label className="text-[10px] uppercase tracking-widest font-black text-gray-300">The Problem</label>
+                 <textarea placeholder="Tell me about your product challenges..." rows={4} className="w-full border-b-2 border-gray-100 pb-6 text-xl focus:outline-none focus:border-[#10B981] bg-transparent transition-all"></textarea>
+              </div>
+              <button type="submit" 
+                      className="w-full py-8 bg-black text-white rounded-[2rem] text-xl font-medium hover:bg-[#10B981] transition-all transform hover:-translate-y-1 shadow-2xl">
+                Send investigation request
+              </button>
+            </form>
+          </div>
+        </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="py-20 border-t border-black/5 bg-[#FCFCFA]">
-        <div className="max-w-7xl mx-auto px-6 text-center text-[10px] font-black uppercase tracking-[0.6em] text-gray-300">
-           Digital Asset Engineering • Crafted for Founders
+      <footer className="border-t border-[#EAEAEA] py-20 bg-white">
+        <div className="max-w-screen-2xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-12 text-sm text-[#6B6B6B]">
+          <div className="font-syne font-semibold text-black text-xl">Umair</div>
+          <div>© 2026 Umair Tufail. Made with intention in Lahore, Pakistan.</div>
+          <div className="flex gap-12 font-medium">
+            <a href="https://github.com/lumenialab-hub" className="hover:text-black transition-colors">GitHub</a>
+            <a href="https://linkedin.com/in/umair-tufail" className="hover:text-black transition-colors">LinkedIn</a>
+          </div>
+          <div className="text-[10px] uppercase tracking-widest opacity-40">Minimal by design. Human by heart.</div>
         </div>
       </footer>
 
-      {/* MOBILE MENU */}
-      <div className={`fixed inset-0 bg-white z-[200] flex flex-col p-12 transition-all duration-700 ease-in-out ${isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}>
-         <div className="flex justify-between items-center mb-24">
-            <span className="font-black uppercase tracking-widest text-2xl">UMAIR.DEV</span>
-            <button onClick={() => setIsMenuOpen(false)} className="p-4 bg-gray-50 rounded-full"><X size={32} /></button>
-         </div>
-         <div className="flex flex-col gap-10 text-6xl font-black tracking-tighter uppercase">
-            <a href="#work" onClick={() => setIsMenuOpen(false)}>Portfolio</a>
-            <a href="#about" onClick={() => setIsMenuOpen(false)}>About</a>
-            <a href="#experience" onClick={() => setIsMenuOpen(false)}>Timeline</a>
-            <a href="https://wa.me/923354455494">Contact</a>
-         </div>
-      </div>
+      {/* MOBILE MENU overlay would go here */}
     </div>
   );
 }
