@@ -27,16 +27,16 @@ export default function AllProjects() {
           <Link href="/" className="text-3xl font-bold tracking-tighter heading-font text-black uppercase">UMAIR</Link>
           
           <div className="hidden md:flex items-center gap-10 text-base">
-            <Link href="/#work" className="nav-link font-medium hover:text-[#10b981] transition-colors">Work</Link>
-            <Link href="/#about" className="nav-link font-medium hover:text-[#10b981] transition-colors">About</Link>
-            <Link href="/#services" className="nav-link font-medium hover:text-[#10b981] transition-colors">Services</Link>
+            <Link href="/#work" className="nav-link font-medium hover:text-[#008080] transition-colors">Work</Link>
+            <Link href="/#about" className="nav-link font-medium hover:text-[#008080] transition-colors">About</Link>
+            <Link href="/#services" className="nav-link font-medium hover:text-[#008080] transition-colors">Services</Link>
           </div>
 
           <a 
             href="https://wa.me/923354455494" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="hidden md:flex items-center gap-3 px-7 py-3.5 bg-black hover:bg-[#10b981] text-white rounded-2xl text-sm font-semibold transition-all duration-300"
+            className="hidden md:flex items-center gap-3 px-7 py-3.5 bg-black hover:bg-[#008080] text-white rounded-2xl text-sm font-semibold transition-all duration-300"
           >
             Work with me
           </a>
@@ -57,7 +57,7 @@ export default function AllProjects() {
               <Link 
                 key={project.slug} 
                 href={`/projects/${project.slug}`}
-                className="group flex flex-col bg-white rounded-[40px] overflow-hidden border border-gray-200/50 hover:border-[#10b981]/30 hover:shadow-2xl hover:shadow-black/5 transition-all duration-500"
+                className="group flex flex-col bg-white rounded-[40px] overflow-hidden border border-gray-200/50 hover:border-[#008080]/30 hover:shadow-2xl hover:shadow-black/5 transition-all duration-500"
               >
                 <div className="relative h-72 bg-gray-100 overflow-hidden">
                   <img 
@@ -73,7 +73,7 @@ export default function AllProjects() {
                 </div>
                 
                 <div className="p-10 flex flex-col flex-grow">
-                  <h3 className="text-3xl font-bold heading-font tracking-tight leading-none mb-4 group-hover:text-[#10b981] transition-colors">
+                  <h3 className="text-3xl font-bold heading-font tracking-tight leading-none mb-4 group-hover:text-[#008080] transition-colors">
                     {project.title}
                   </h3>
                   <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-8">
@@ -100,7 +100,7 @@ export default function AllProjects() {
       <footer className="bg-[#0A0A0A] text-white py-20">
          <div className="max-w-7xl mx-auto px-6 text-center">
             <h2 className="text-4xl font-bold heading-font mb-8">Let's talk about your project.</h2>
-            <a href="https://wa.me/923354455494" className="inline-flex items-center gap-4 px-12 py-6 bg-[#10b981] text-white rounded-3xl text-xl font-medium hover:bg-white hover:text-black transition-all">
+            <a href="https://wa.me/923354455494" className="inline-flex items-center gap-4 px-12 py-6 bg-[#008080] text-white rounded-3xl text-xl font-medium hover:bg-white hover:text-black transition-all">
                Get in Touch
             </a>
          </div>

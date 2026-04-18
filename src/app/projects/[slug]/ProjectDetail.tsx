@@ -36,7 +36,7 @@ export default function ProjectDetailClient({ projects }: { projects: Project[] 
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <Link href="/" className="text-3xl font-bold tracking-tighter heading-font text-black uppercase">UMAIR</Link>
-          <Link href="/projects" className="text-sm font-semibold hover:text-[#10b981] transition-colors flex items-center gap-2">
+          <Link href="/projects" className="text-sm font-semibold hover:text-[#008080] transition-colors flex items-center gap-2">
             <span className="text-lg">←</span> Back to Archive
           </Link>
         </div>
@@ -60,7 +60,7 @@ export default function ProjectDetailClient({ projects }: { projects: Project[] 
                 href={project.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="group flex items-center gap-6 px-10 py-6 bg-black text-white rounded-full text-xl font-medium hover:bg-[#10b981] transition-all duration-300"
+                className="group flex items-center gap-6 px-10 py-6 bg-black text-white rounded-full text-xl font-medium hover:bg-[#008080] transition-all duration-300"
                 >
                 Launch Site
                 <span className="group-hover:translate-x-2 transition-transform">↗</span>
@@ -135,7 +135,7 @@ export default function ProjectDetailClient({ projects }: { projects: Project[] 
            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter heading-font mb-12">NEXT PROJECT?</h2>
            <Link 
             href="/projects"
-            className="inline-block text-2xl font-medium border-b-2 border-white pb-2 hover:border-[#10b981] hover:text-[#10b981] transition-all"
+            className="inline-block text-2xl font-medium border-b-2 border-white pb-2 hover:border-[#008080] hover:text-[#008080] transition-all"
            >
             Explore the full archive
            </Link>

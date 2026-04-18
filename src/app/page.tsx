@@ -109,51 +109,85 @@ export default function Home() {
       </section>
 
       {/* SELECTED WORK */}
-      <section id="work" className="py-32 bg-[#F7F7F7]">
+      <section id="work" className="py-32 bg-[#FBFBFB]">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-between items-end mb-16">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
             <div>
-              <h2 className="text-5xl md:text-6xl font-bold tracking-tighter font-syne">Selected Work</h2>
-              <p className="mt-4 text-xl text-gray-600 max-w-md">Real projects delivered with modern full-stack tools.</p>
+              <div className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400 font-poppins mb-4">Latest Projects</div>
+              <h2 className="text-6xl md:text-7xl font-bold tracking-tighter leading-none font-syne">
+                Work <br />
+                <span className="italic font-normal text-black">showcase.</span>
+              </h2>
             </div>
-            <Link href="/projects" className="hidden md:flex items-center gap-2 text-sm font-medium hover:text-[#10b981]">
-              View all projects
-            </Link>
+            <div className="text-right">
+              <Link href="/projects" className="group flex items-center gap-4 px-10 py-5 bg-white border border-gray-200 rounded-2xl text-sm font-bold hover:bg-black hover:text-white transition-all shadow-sm font-poppins">
+                View all projects <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </Link>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {PROJECTS.map((project) => (
-              <div key={project.slug} className="group bg-white rounded-[40px] overflow-hidden border border-gray-200/60 shadow-sm hover:shadow-2xl transition-all duration-700">
-                <div className="relative h-72 bg-gray-900">
-                  <img
-                    src={project.thumbnail || project.images?.[0]}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute top-6 right-6 bg-black/80 backdrop-blur-md text-white text-[9px] font-bold uppercase tracking-[0.1em] px-5 py-2 rounded-full">
-                    {project.niche}
-                  </div>
-                </div>
-                <div className="p-10 flex flex-col">
-                  <h3 className="text-2xl font-bold tracking-tight leading-tight font-syne">{project.title}</h3>
-                  <p className="mt-4 text-gray-500 leading-relaxed text-sm line-clamp-2 italic font-dm">
-                    {project.problem}
-                  </p>
-
-                  <div className="mt-8 flex flex-wrap gap-2">
-                    {project.stack.split(",").slice(0, 3).map(tag => (
-                      <span key={tag} className="text-[9px] font-black uppercase tracking-wider bg-black text-white px-4 py-2 rounded-xl">
-                        {tag.trim()}
+          <div className="max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
+            <div className="divide-y divide-gray-100 border-y border-gray-100">
+              {PROJECTS.map((project, index) => (
+                <Link 
+                  key={project.slug} 
+                  href={`/projects/${project.slug}`} 
+                  className="group block bg-white py-6 px-4 md:px-8 transition-all hover:bg-black"
+                >
+                  <div className="grid md:grid-cols-12 gap-8 items-center">
+                    {/* Index */}
+                    <div className="hidden md:block md:col-span-1">
+                      <span className="text-[11px] font-bold text-gray-400 group-hover:text-gray-700 font-syne transition-colors tracking-tighter">
+                        {String(index + 1).padStart(2, "0")}
                       </span>
-                    ))}
-                  </div>
+                    </div>
 
-                  <Link href={`/projects/${project.slug}`} className="mt-10 inline-flex items-center gap-3 text-[11px] font-black text-[#10b981] uppercase tracking-widest">
-                    View Case Study →
-                  </Link>
-                </div>
-              </div>
-            ))}
+                    {/* Thumbnail */}
+                    <div className="md:col-span-2">
+                       <div className="aspect-[16/11] bg-gray-50 rounded-xl overflow-hidden border border-gray-100 group-hover:border-white/20 transition-all duration-500 shadow-sm">
+                        <img 
+                          src={project.thumbnail || project.images?.[0]} 
+                          alt={project.title} 
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        />
+                       </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="md:col-span-6">
+                      <h3 className="text-2xl md:text-3xl font-bold tracking-tight font-syne group-hover:text-white transition-colors mb-1">
+                        {project.title}
+                      </h3>
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 mb-4">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#10b981] font-syne group-hover:text-[#10b981] transition-colors">{project.niche}</span>
+                        <span className="w-1 h-1 bg-gray-300 group-hover:bg-gray-700 rounded-full"></span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-syne group-hover:text-gray-400 transition-colors">{project.location || "Global"}</span>
+                      </div>
+                      
+                      {/* Tech Tags */}
+                      <div className="flex flex-wrap gap-2">
+                        {project.stack.split(",").slice(0, 3).map((tech) => (
+                          <span key={tech} className="px-3 py-1 bg-white border border-gray-200 text-[9px] font-bold uppercase tracking-widest text-gray-500 group-hover:bg-transparent group-hover:border-white/30 group-hover:text-white transition-all font-syne">
+                            {tech.trim()}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Link Label */}
+                    <div className="md:col-span-3 flex justify-end items-center">
+                      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 group-hover:text-[#10b981] transition-colors font-poppins text-right">
+                        {project.link ? `${project.link.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]} ↗` : 'Link N/A'}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+          
+          <div className="mt-12 text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 font-poppins">
+            {PROJECTS.length} of {PROJECTS.length} shown
           </div>
         </div>
       </section>
@@ -161,35 +195,210 @@ export default function Home() {
       {/* ABOUT */}
       <section id="about" className="py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-20 items-center">
-          <div className="md:col-span-5">
+          <div className="md:col-span-12 lg:col-span-5">
             <h2 className="text-7xl font-bold tracking-tighter leading-none font-syne">Hi, I'm <br />Umair.</h2>
             <div className="mt-8 text-[#10b981] text-xl font-black uppercase tracking-widest">Full-Stack Engineer</div>
           </div>
-          <div className="md:col-span-7 space-y-8 text-xl text-gray-600 leading-relaxed font-dm">
-            <p className="text-2xl text-black font-medium leading-snug">
-              I specialize in building end-to-end digital products using modern technologies.
-            </p>
-            <p>
-              From robust PHP/Laravel backends and AWS cloud infrastructure to pixel-perfect Next.js and React frontends.
-              My focus is on creating scalable, maintainable systems that solve real business problems.
-            </p>
+          <div className="md:col-span-12 lg:col-span-7 space-y-12 text-xl text-gray-600 leading-relaxed font-dm">
+            <div className="space-y-6">
+              <p className="text-2xl text-black font-medium leading-snug">
+                I specialize in building end-to-end digital products using modern technologies.
+              </p>
+              <p>
+                From robust PHP/Laravel backends and AWS cloud infrastructure to pixel-perfect Next.js and React frontends.
+                My focus is on creating scalable, maintainable systems that solve real business problems.
+              </p>
+            </div>
+
+            <div className="pt-12 border-t border-gray-100 flex flex-wrap gap-x-12 gap-y-6 text-sm">
+              <div>
+                <div className="font-semibold text-black">Based in</div>
+                <div className="text-gray-500">Lahore, Pakistan</div>
+              </div>
+              <div>
+                <div className="font-semibold text-black">Available for</div>
+                <div className="text-gray-500">Freelance & Contract projects</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TECH STACK MATIX */}
+      <section className="py-24 bg-[#FBFBFB] border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-16">
+            <div className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400 font-poppins mb-4">Core Competencies</div>
+            <h2 className="text-5xl md:text-6xl font-bold tracking-tighter font-syne uppercase">Tech Stack</h2>
+          </div>
+          
+          <div className="border border-gray-200 bg-white shadow-sm overflow-hidden">
+            <div className="divide-y divide-gray-200">
+              {[
+                { category: "BACKEND", tags: ["Laravel", "PHP", "MySQL", "REST APIs", "Laravel Breeze"], primary: ["Laravel"] },
+                { category: "FRONTEND", tags: ["Tailwind CSS", "HTML", "Bootstrap", "JavaScript", "Blade templates"], primary: ["Tailwind CSS", "JavaScript"] },
+                { category: "INTEGRATIONS", tags: ["Deliverect API", "QuickBooks API", "Barcode APIs", "Payment Gateways"], primary: [] },
+                { category: "ARCHITECTURE", tags: ["Multi-tenant SaaS", "RBAC", "Admin portals", "Auth systems", "Custom CMS"], primary: ["Multi-tenant SaaS", "RBAC"] },
+                { category: "TOOLS", tags: ["Git", "Composer", "Postman", "cPanel"], primary: ["Git"] }
+              ].map((row) => (
+                <div key={row.category} className="grid grid-cols-12 group">
+                  <div className="col-span-12 md:col-span-3 p-6 md:p-8 bg-[#FBFBFB] border-b md:border-b-0 md:border-r border-gray-200 flex items-center">
+                    <span className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400 font-poppins">{row.category}</span>
+                  </div>
+                  <div className="col-span-12 md:col-span-9 p-6 md:p-8 flex flex-wrap gap-3">
+                    {row.tags.map((tag) => (
+                      <div 
+                        key={tag} 
+                        className={`px-4 py-2 text-[11px] font-bold uppercase tracking-wider font-poppins transition-all duration-300 ${
+                          row.primary.includes(tag) 
+                            ? "border-2 border-gray-800 text-black shadow-sm" 
+                            : "border border-gray-200 text-gray-400 group-hover:text-gray-600"
+                        }`}
+                      >
+                        {tag}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Legend */}
+            <div className="p-6 md:p-8 bg-[#FBFBFB] border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="text-[10px] font-medium text-gray-400 uppercase tracking-widest font-poppins">
+                Bold border = primary expertise
+              </div>
+              <div className="text-[10px] font-medium text-gray-400 uppercase tracking-widest font-poppins">
+                Muted = supporting / occasional
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* SERVICES */}
-      <section id="services" className="py-32 bg-[#F7F7F7]">
+      <section id="services" className="py-32 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-5xl font-bold tracking-tighter mb-4 font-syne">Services</h2>
-          <div className="mt-20 grid md:grid-cols-2 gap-12">
-            <div className="bg-white p-12 rounded-[3rem] shadow-sm hover:shadow-xl transition-all">
-              <div className="text-3xl font-bold font-syne">SaaS Development</div>
-              <div className="mt-12 text-5xl font-black text-black font-syne">$700+</div>
+          <div className="flex flex-col md:flex-row justify-between items-start mb-20 gap-8">
+            <div>
+              <div className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400 font-poppins mb-4">What I Build</div>
+              <h2 className="text-6xl md:text-7xl font-bold tracking-tighter leading-[0.8] font-syne">
+                Full-stack <br />
+                <span className="italic font-normal">services.</span>
+              </h2>
             </div>
-            <div className="bg-white p-12 rounded-[3rem] shadow-sm hover:shadow-xl transition-all border-t-8 border-[#10b981]">
-              <div className="text-3xl font-bold font-syne">Admin Systems</div>
-              <div className="mt-12 text-5xl font-black text-black font-syne">$500+</div>
+            <div className="max-w-xs text-right self-end">
+              <p className="text-[11px] font-medium leading-relaxed text-gray-500 uppercase tracking-widest font-poppins">
+                Every service ships as a complete, working product — not a prototype.
+              </p>
             </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 border border-gray-200">
+            {/* Service 01 */}
+            <div className="p-10 md:p-16 border-b md:border-b-0 md:border-r border-gray-200 hover:bg-[#FBFBFB] transition-colors group">
+              <div className="flex justify-between items-start mb-12">
+                <span className="text-xs font-bold text-gray-400 font-poppins">01</span>
+                <span className="px-3 py-1 border border-gray-200 text-[9px] font-bold uppercase tracking-widest text-gray-400">SaaS</span>
+              </div>
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tight font-syne mb-6 italic group-hover:text-[#10b981] transition-colors">SaaS Platform Development</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-10 font-poppins max-w-sm">
+                Multi-tenant applications with role-based access, subscription flows, and deep API integrations.
+              </p>
+              <ul className="space-y-3 mb-12">
+                {['Multi-tenant architecture', 'RBAC & permissions', 'QuickBooks / third-party APIs', 'Custom admin dashboard'].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-[11px] font-medium text-gray-400 uppercase tracking-wider">
+                    <span className="w-4 h-px bg-gray-300"></span> {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="pt-8 border-t border-gray-100 text-[10px] italic text-gray-400 font-poppins">
+                Seen in: TMS trucking platform — Canadian logistics SaaS.
+              </div>
+            </div>
+
+            {/* Service 02 */}
+            <div className="p-10 md:p-16 border-b border-gray-200 md:border-b-0 hover:bg-[#FBFBFB] transition-colors group">
+              <div className="flex justify-between items-start mb-12">
+                <span className="text-xs font-bold text-gray-400 font-poppins">02</span>
+                <span className="px-3 py-1 border border-gray-200 text-[9px] font-bold uppercase tracking-widest text-gray-400">E-commerce</span>
+              </div>
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tight font-syne mb-6 italic group-hover:text-[#10b981] transition-colors">Food & Retail E-commerce</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-10 font-poppins max-w-sm">
+                Proprietary storefronts and food delivery platforms with deals engines and delivery integrations.
+              </p>
+              <ul className="space-y-3 mb-12">
+                {['Custom storefront & checkout', 'Deals & discounts engine', 'Deliverect API integration', 'Category & menu management'].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-[11px] font-medium text-gray-400 uppercase tracking-wider">
+                    <span className="w-4 h-px bg-gray-300"></span> {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="pt-8 border-t border-gray-100 text-[10px] italic text-gray-400 font-poppins">
+                Seen in: Medaan — food delivery platform, Calgary CA.
+              </div>
+            </div>
+
+            {/* Service 03 */}
+            <div className="p-10 md:p-16 border-t border-gray-200 md:border-r hover:bg-[#FBFBFB] transition-colors group">
+              <div className="flex justify-between items-start mb-12">
+                <span className="text-xs font-bold text-gray-400 font-poppins">03</span>
+                <span className="px-3 py-1 border border-gray-200 text-[9px] font-bold uppercase tracking-widest text-gray-400">ERP</span>
+              </div>
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tight font-syne mb-6 italic group-hover:text-[#10b981] transition-colors">ERP & Inventory Systems</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-10 font-poppins max-w-sm">
+                End-to-end inventory engines, order lifecycle tracking, and CRM built for real operations.
+              </p>
+              <ul className="space-y-3 mb-12">
+                {['Barcode-driven inventory', 'Custom product bundling', 'Multi-tenant CRM', 'Real-time analytics'].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-[11px] font-medium text-gray-400 uppercase tracking-wider">
+                    <span className="w-4 h-px bg-gray-300"></span> {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="pt-8 border-t border-gray-100 text-[10px] italic text-gray-400 font-poppins">
+                Seen in: ANR Inventory ERP — US market.
+              </div>
+            </div>
+
+            {/* Service 04 */}
+            <div className="p-10 md:p-16 border-t border-gray-200 hover:bg-[#FBFBFB] transition-colors group">
+              <div className="flex justify-between items-start mb-12">
+                <span className="text-xs font-bold text-gray-400 font-poppins">04</span>
+                <span className="px-3 py-1 border border-gray-200 text-[9px] font-bold uppercase tracking-widest text-gray-400">Booking</span>
+              </div>
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tight font-syne mb-6 italic group-hover:text-[#10b981] transition-colors">Booking & Reservation Platforms</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-10 font-poppins max-w-sm">
+                Conversion-optimised booking flows with package browsers, guide profiles, and custom CMS.
+              </p>
+              <ul className="space-y-3 mb-12">
+                {['Booking engine & availability', 'Tour & package management', 'Custom CMS for admins', 'Dynamic homepage controls'].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-[11px] font-medium text-gray-400 uppercase tracking-wider">
+                    <span className="w-4 h-px bg-gray-300"></span> {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="pt-8 border-t border-gray-100 text-[10px] italic text-gray-400 font-poppins">
+                Seen in: Hot Air Balloon platform — Dubai, AE.
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div className="flex gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 font-poppins">
+              <span>4 services</span>
+              <span className="w-1 h-1 bg-gray-300 rounded-full self-center"></span>
+              <span>3 markets</span>
+              <span className="w-1 h-1 bg-gray-300 rounded-full self-center"></span>
+              <span>Laravel ecosystem</span>
+            </div>
+            <a 
+              href="https://wa.me/923354455494" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="px-10 py-5 bg-white border border-gray-200 rounded-2xl text-sm font-bold hover:bg-black hover:text-white transition-all shadow-sm font-poppins flex items-center gap-4"
+            >
+              Start a project <span>→</span>
+            </a>
           </div>
         </div>
       </section>

@@ -64,7 +64,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "vendors-hendor",
-    title: "Vendors Hendor",
+    title: "Vendor Shendor",
     link: "#",
     thumbnail: "/projects/vendorshendor/landingpage.png",
     images: [
